@@ -1,0 +1,26 @@
+{
+    "workbench.preferredHighContrastColorTheme": "Default Light Modern",
+    "telemetry.feedback.enabled": false,
+    "window.customTitleBarVisibility": "windowed",
+    "workbench.enableExperiments": false,
+    "files.watcherExclude": {
+        "**/.bloop": true,
+        "**/.metals": true
+    },
+    "security.workspace.trust.untrustedFiles": "open",
+    "breadcrumbs.enabled": false,
+    "editor.inlineSuggest.suppressSuggestions": true,
+    "editor.quickSuggestions": {
+        "other": "inline"
+    },
+    "editor.quickSuggestionsDelay": 20,
+    "editor.fontSize": 12,
+    "numberedBookmarks.navigateThroughAllFiles": "replace",
+    "editor.minimap.enabled": false,
+    "window.autoDetectHighContrast": false,
+    "workbench.colorTheme": "Default Light Modern",
+    "metals.autoImportBuilds": "all",
+    "workbench.colorCustomizations": {
+        
+    }
+}

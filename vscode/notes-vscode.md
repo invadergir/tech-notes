@@ -30,7 +30,7 @@ Be sure to set numberedBookmarks.navigateThroughAllFiles to "replace"
 * ALT-G = Go To Line/Column
 * CTRL-] = Go to Bracket
 * CTRL-Shift-W = View: Close Other Editors in Group
-
+* CTRL-B = Go to Definition
 
 ## Scala development
 

@@ -26,5 +26,6 @@
     "files.autoSave": "afterDelay",
     "editor.scrollbar.scrollByPage": true,
     "editor.fastScrollSensitivity": 20,
-    "editor.mouseWheelScrollSensitivity": 2
+    "editor.mouseWheelScrollSensitivity": 2,
+    "go.lintOnSave": "off"
 }

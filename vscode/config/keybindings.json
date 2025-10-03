@@ -159,6 +159,6 @@
     {
         "key": "shift+escape",
         "command": "workbench.action.closeSidebar",
-        "when": "editorTextFocus"
+        "when": "editorTextFocus || sideBarFocus"
     }
 ]

@@ -160,5 +160,24 @@
         "key": "shift+escape",
         "command": "workbench.action.closeSidebar",
         "when": "editorTextFocus || sideBarFocus"
+    },
+    {
+        "key": "shift+f6",
+        "command": "editor.action.rename",
+        "when": "editorHasRenameProvider && editorTextFocus && !editorReadonly"
+    },
+    {
+        "key": "f2",
+        "command": "-editor.action.rename",
+        "when": "editorHasRenameProvider && editorTextFocus && !editorReadonly"
+    },
+    {
+        "key": "shift+f6",
+        "command": "-workbench.action.focusPreviousPart"
+    },
+    {
+        "key": "ctrl+down",
+        "command": "-workbench.action.terminal.focus",
+        "when": "accessibilityModeEnabled && accessibleViewOnLastLine && terminalHasBeenCreated && accessibleViewCurrentProviderId == 'terminal' || accessibilityModeEnabled && accessibleViewOnLastLine && terminalProcessSupported && accessibleViewCurrentProviderId == 'terminal'"
     }
 ]

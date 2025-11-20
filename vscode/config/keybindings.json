@@ -129,11 +129,6 @@
         "command": "-workbench.action.toggleSidebarVisibility"
     },
     {
-        "key": "ctrl+-",
-        "command": "workbench.action.navigateBack",
-        "when": "canNavigateBack"
-    },
-    {
         "key": "ctrl+alt+-",
         "command": "-workbench.action.navigateBack",
         "when": "canNavigateBack"
@@ -150,11 +145,6 @@
     {
         "key": "ctrl+p",
         "command": "-workbench.action.quickOpen"
-    },
-    {
-        "key": "ctrl+p",
-        "command": "workbench.action.navigateBack",
-        "when": "canNavigateBack"
     },
     {
         "key": "shift+escape",
@@ -227,5 +217,49 @@
         "key": "ctrl+alt+c",
         "command": "-copyFilePath",
         "when": "!editorFocus"
+    },
+    {
+        "key": "browserforward",
+        "command": "-workbench.action.navigateForward",
+        "when": "canNavigateForward"
+    },
+    {
+        "key": "ctrl+y",
+        "command": "workbench.action.navigateForward",
+        "when": "canNavigateForward"
+    },
+    {
+        "key": "ctrl+shift+-",
+        "command": "-workbench.action.navigateForward",
+        "when": "canNavigateForward"
+    },
+    {
+        "key": "f9",
+        "command": "-editor.debug.action.toggleBreakpoint",
+        "when": "debuggersAvailable && disassemblyViewFocus || debuggersAvailable && editorTextFocus"
+    },
+    {
+        "key": "f9",
+        "command": "workbench.action.tasks.build",
+        "when": "taskCommandsRegistered"
+    },
+    {
+        "key": "ctrl+p",
+        "command": "workbench.action.navigateBack",
+        "when": "canNavigateBack"
+    },
+    {
+        "key": "ctrl+alt+b",
+        "command": "editor.action.goToImplementation",
+        "when": "editorHasImplementationProvider && editorTextFocus"
+    },
+    {
+        "key": "ctrl+alt+b",
+        "command": "-workbench.action.toggleAuxiliaryBar"
+    },
+    {
+        "key": "alt+o",
+        "command": "editor.action.organizeImports",
+        "when": "textInputFocus && !editorReadonly && supportedCodeAction =~ /(\\s|^)source\\.organizeImports\\b/"
     }
 ]

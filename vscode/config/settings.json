@@ -1,5 +1,6 @@
 {
-    "workbench.preferredHighContrastColorTheme": "Default Light Modern",
+    "window.autoDetectHighContrast": false,
+    "workbench.colorTheme": "Quiet Light",
     "telemetry.feedback.enabled": false,
     "window.customTitleBarVisibility": "windowed",
     "workbench.enableExperiments": false,
@@ -8,7 +9,6 @@
         "**/.metals": true
     },
     "security.workspace.trust.untrustedFiles": "open",
-    "breadcrumbs.enabled": false,
     "editor.inlineSuggest.suppressSuggestions": true,
     "editor.quickSuggestions": {
         "other": "inline"
@@ -17,18 +17,23 @@
     "editor.fontSize": 12,
     "numberedBookmarks.navigateThroughAllFiles": "replace",
     "editor.minimap.enabled": false,
-    "window.autoDetectHighContrast": false,
-    "workbench.colorTheme": "Default Light Modern",
     "metals.autoImportBuilds": "all",
-    "workbench.colorCustomizations": {
-        
-    },
     "files.autoSave": "afterDelay",
     "editor.scrollbar.scrollByPage": true,
     "editor.fastScrollSensitivity": 20,
     "editor.mouseWheelScrollSensitivity": 2,
-    "go.lintOnSave": "off",
-    "go.languageServerFlags": [
-        
-    ]
+    "window.title": "${dirty}${activeEditorShort}${separator}${rootName}${separator}${profileName}${separator}${appName}${folderName}",
+    "editor.copyWithSyntaxHighlighting": false,
+    "editor.tokenColorCustomizations": {
+        //"comments": "#FF0000",      
+        //"strings": "#FFA500"        
+        "keywords": "#991111",
+        "variables": "#333333"
+    },
+    "go.formatTool": "gofmt",
+    "[go]": {
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "never"
+        }
+    }
 }

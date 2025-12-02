@@ -261,5 +261,24 @@
         "key": "alt+o",
         "command": "editor.action.organizeImports",
         "when": "textInputFocus && !editorReadonly && supportedCodeAction =~ /(\\s|^)source\\.organizeImports\\b/"
+    },
+    {
+        "key": "ctrl+d",
+        "command": "-editor.action.addSelectionToNextFindMatch",
+        "when": "editorFocus"
+    },
+    {
+        "key": "ctrl+d",
+        "command": "git.openChange",
+        "when": "editorFocus"
+    },
+    {
+        "key": "ctrl+shift+d",
+        "command": "git.openAllChanges"
+    },
+    {
+        "key": "ctrl+d",
+        "command": "git.openFile",
+        "when": "editorFocus && inDiffEditor"
     }
 ]

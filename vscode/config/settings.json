@@ -35,5 +35,6 @@
         "editor.codeActionsOnSave": {
             "source.organizeImports": "never"
         }
-    }
+    },
+    "git.openRepositoryInParentFolders": "never"
 }

@@ -240,8 +240,8 @@
     },
     {
         "key": "f9",
-        "command": "workbench.action.tasks.build",
-        "when": "taskCommandsRegistered"
+        "command": "workbench.action.tasks.runTask",
+        "args": "Run 'make build'"
     },
     {
         "key": "ctrl+p",

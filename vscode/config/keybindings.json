@@ -280,5 +280,17 @@
         "key": "ctrl+d",
         "command": "git.openFile",
         "when": "editorFocus && inDiffEditor"
+    },
+    {
+        "key": "ctrl+0",
+        "command": "numberedBookmarks.jumpToBookmark0"
+    },
+    {
+        "key": "ctrl+0",
+        "command": "-workbench.action.focusSideBar"
+    },
+    {
+        "key": "ctrl+shift+0",
+        "command": "numberedBookmarks.toggleBookmark0"
     }
 ]

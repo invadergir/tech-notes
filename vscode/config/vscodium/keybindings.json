@@ -292,5 +292,20 @@
     {
         "key": "ctrl+shift+0",
         "command": "numberedBookmarks.toggleBookmark0"
+    },
+    {
+        "key": "ctrl+f9",
+        "command": "workbench.action.debug.continue",
+        "when": "debugState == 'stopped'"
+    },
+    {
+        "key": "ctrl+f9",
+        "command": "workbench.action.debug.start",
+        "when": "debuggersAvailable && debugState == 'inactive'"
+    },
+    {
+        "key": "ctrl+f9",
+        "command": "-workbench.action.chat.nextFileTree",
+        "when": "chatIsEnabled && inChat"
     }
 ]

@@ -1,0 +1,43 @@
+{
+    "telemetry.editStats.enabled": false,
+    "telemetry.feedback.enabled": false,
+    "telemetry.telemetryLevel": "off",
+    "window.autoDetectHighContrast": false,
+    "workbench.colorTheme": "Quiet Light",
+    "window.customTitleBarVisibility": "windowed",
+    "workbench.enableExperiments": false,
+    "files.watcherExclude": {
+        "**/.bloop": true,
+        "**/.metals": true
+    },
+    "security.workspace.trust.untrustedFiles": "open",
+    "editor.inlineSuggest.suppressSuggestions": true,
+    "editor.quickSuggestions": {
+        "other": "inline"
+    },
+    "editor.quickSuggestionsDelay": 20,
+    "editor.fontSize": 12,
+    "numberedBookmarks.navigateThroughAllFiles": "replace",
+    "editor.minimap.enabled": false,
+    "metals.autoImportBuilds": "all",
+    "files.autoSave": "afterDelay",
+    "editor.scrollbar.scrollByPage": true,
+    "editor.fastScrollSensitivity": 20,
+    "editor.mouseWheelScrollSensitivity": 2,
+    "window.title": "${dirty}${activeEditorShort}${separator}${rootName}${separator}${profileName}${separator}${appName}${folderName}",
+    "editor.copyWithSyntaxHighlighting": false,
+    "editor.tokenColorCustomizations": {
+        //"comments": "#FF0000",      
+        //"strings": "#FFA500"        
+        "keywords": "#991111",
+        "variables": "#333333"
+    },
+    "go.formatTool": "gofmt",
+    "[go]": {
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "never"
+        }
+    },
+    "git.openRepositoryInParentFolders": "never",
+    "github.copilot.nextEditSuggestions.enabled": true
+}

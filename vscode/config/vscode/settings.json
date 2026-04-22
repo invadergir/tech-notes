@@ -46,5 +46,14 @@
         "compounds": []
     },
     "update.mode": "manual",
-    "chat.viewSessions.orientation": "stacked"
+    "terminal.integrated.stickyScroll.enabled": false,
+    "github.copilot.enable": {
+        "*": false,
+        "plaintext": false,
+        "markdown": false,
+        "scminput": false,
+        "go": true
+    },
+    "chat.viewSessions.orientation": "stacked",
+    "window.enableMenuBarMnemonics": false
 }

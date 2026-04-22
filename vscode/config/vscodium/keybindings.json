@@ -241,7 +241,7 @@
     {
         "key": "f9",
         "command": "workbench.action.tasks.runTask",
-        "args": "Run 'make build'"
+        "args": "Run 'make test'"
     },
     {
         "key": "ctrl+p",
@@ -307,5 +307,39 @@
         "key": "ctrl+f9",
         "command": "-workbench.action.chat.nextFileTree",
         "when": "chatIsEnabled && inChat"
+    },
+    {
+        "key": "alt+f9",
+        "command": "-testing.coverage.goToNextMissedLine",
+        "when": "activeEditor && testing.hasCoverageInFile"
+    },
+    {
+        "key": "alt+f9",
+        "command": "-editor.action.nextCommentThreadAction"
+    },
+    {
+        "key": "alt+f9",
+        "command": "workbench.action.tasks.runTask",
+        "args": "Run 'make clean test'"
+    },
+    {
+        "key": "alt+up",
+        "command": "workbench.action.compareEditor.previousChange",
+        "when": "textCompareEditorVisible"
+    },
+    {
+        "key": "shift+alt+f5",
+        "command": "-workbench.action.compareEditor.previousChange",
+        "when": "textCompareEditorVisible"
+    },
+    {
+        "key": "alt+down",
+        "command": "workbench.action.compareEditor.nextChange",
+        "when": "textCompareEditorVisible"
+    },
+    {
+        "key": "alt+f5",
+        "command": "-workbench.action.compareEditor.nextChange",
+        "when": "textCompareEditorVisible"
     }
 ]

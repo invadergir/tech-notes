@@ -1,7 +1,9 @@
 {
+    "telemetry.editStats.enabled": false,
+    "telemetry.feedback.enabled": false,
+    "telemetry.telemetryLevel": "off",
     "window.autoDetectHighContrast": false,
     "workbench.colorTheme": "Quiet Light",
-    "telemetry.feedback.enabled": false,
     "window.customTitleBarVisibility": "windowed",
     "workbench.enableExperiments": false,
     "files.watcherExclude": {

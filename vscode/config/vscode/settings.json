@@ -39,5 +39,12 @@
         }
     },
     "git.openRepositoryInParentFolders": "never",
-    "github.copilot.nextEditSuggestions.enabled": true
+    "github.copilot.nextEditSuggestions.enabled": true,
+    "launch": {
+        "configurations": [
+        ],
+        "compounds": []
+    },
+    "update.mode": "manual",
+    "chat.viewSessions.orientation": "stacked"
 }

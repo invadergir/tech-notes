@@ -1,0 +1,106 @@
+Linux Desktop on WSL Notes / Log from 2024
+
+1. Try RDP only
+   * apt install xrdp, etc - see xrdp notes
+   * connect
+   * SUCCESS - it brings up 2 separate windows, one big blank window (because desktop not set up) and what looks like a gnome terminal (might be xterm).
+   * Backed up
+2. Next try installing a desktop then RDP
+   * installed kde-plasma-desktop:  `apt install kde-plasma-desktop`
+   * backed up, rebooted
+   * first connect - got a crash error from kde/plasma "We're sorry, plasma crashed".  Restarted it.
+   * second connect - got an all-black window and same error after clicking around in the window in fullscreen.
+   * rebooted (windows)
+3. Maybe another desktop or try hints from the web
+   * Installed lightdm per
+   https://gist.github.com/camullen/0c41d989ac2ad7a89e75eb3be0f8fb16
+   * It just kicks me out.  remote desktop window stays on cyan login screen for a bit, then closes.
+4. Try opensuse
+   X* Installed plasma desktop via `zypper install -t pattern kde kde_plasma`
+   X* rebooted
+   X* installed xrdp
+   X* rebooted
+   * systemd is not working properly
+   * Turns out you need to do some stuff to get opensuse working in wsl:
+   https://en.opensuse.org/openSUSE%3AWSL
+   * reverted back to pre-kde install
+   * installed stuff from the WSL link above, restarted vm
+   * Installed plasma: `zypper install -t pattern kde kde_plasma`
+   * Installed xrdp
+   * backed up 005
+   * add this to wsl.conf
+     [boot]
+     systemd=true
+   * zypper install firewalld yast2-firewall
+   * yast2 firewall
+     * opened ports 3350, 3389 on public
+     * firewalld on wsl doesn't seem to work right; can't get open ports
+5. Trying debian
+   * replace sources.list with 'bookworm'; apt full-upgrade
+   * installed everything (kde, xrdp)
+   * connect with rdp, get black screen
+   * try xrdp on port 3390 instead of 3389 (/etc/xrdp/xrdp.ini)
+     * doesn't seem to matter
+5.1. Retry debian with xfce4
+   * RDP desktop works with same instructions as ubuntu (see below)
+6. If that doesn't work try xfce on ubuntu:
+   https://askubuntu.com/questions/1252007/opening-ubuntu-20-04-desktop-on-wsl2
+     * RDP desktop works
+     * Directions that I used follow.  I think the key is to disable wayland:
+```
+# from https://github.com/microsoft/WSL/issues/8867#issuecomment-1256344696
+# fixes acpi install issues
+sudo ln -s /dev/null /etc/systemd/system/acpid.service
+sudo ln -s /dev/null /etc/systemd/system/acpid.path
+
+apt-get install xfce4 desktop-base xfce4-whiskermenu-plugin  xrdp
+# If asked, select lightdm, although it probably doesn't matter
+
+# open up rdp ports (ip address taken from windows 'ipconfig' under "Ethernet adapter vEthernet (WSL (Hyper-V firewall))":
+ufw allow in from 172.19.32.1 to any port 3350
+ufw allow in from 172.19.32.1 to any port 3390
+
+# Optionally, back up the default config
+sudo cp /etc/xrdp/xrdp.ini /etc/xrdp/xrdp.ini.bak
+
+# Windows Pro and higher are often already running RDP on 3389
+# Prevent conflicts:
+sudo sed -i 's/3389/3390/g' /etc/xrdp/xrdp.ini
+
+# I also change this in xrdp.ini in order to try to disable encryption in RDP.
+# Todo: confirm this works somehow? (Graphics still seem slow.)
+sudo sed -i 's/crypt_level=high/crypt_level=none/g' /etc/xrdp/xrdp.ini
+
+# Prevent Wayland from being used in Xrdp
+F=/home/user/.xsessionrc
+echo "export WAYLAND_DISPLAY=" >> $F && chown user:user $F && chmod 770 $F
+
+# Optional, if you have more than one desktop environment installed:
+echo startxfce4 > ~/.xsession
+
+# Lastly restart the xrdp stuff, if running Systemd (which you should be):
+sudo systemctl enable xrdp xrdp-sesman
+sudo systemctl restart xrdp xrdp-sesman
+## (if not running Systemd just start xrdp using 'service'):
+sudo service xrdp start
+
+```
+
+7. Trying other desktops:
+   * budgie-core and budgie-desktop load but both crash before getting into desktop
+   * cinnamon-core: crashes on the black screen "You are currently running in fallback mode."
+   * lxqt: works! but I don't love that desktop.  Side task bar isn't the best, but it could make do.
+   * xubuntu-desktop: hangs when installing acpi-support.  There is a fix for that here supposedly:
+   https://github.com/microsoft/WSL/issues/8867#issuecomment-1256344696
+   sudo ln -s /dev/null /etc/systemd/system/acpid.service
+   sudo ln -s /dev/null /etc/systemd/system/acpid.path
+8. Try KDE again, minimal with wayland and acpi disabled (instead of kde-plasma-desktop):
+   #`apt install kde-baseapps plasma-desktop plasma-workspace udisks2`
+   apt install  plasma-desktop plasma-workspace udisks2 xrdp konsole -y
+   "We are sorry, Plasma closed unexpectedly."  - same as before.
+9. Try minimal budgie again:
+   apt-get install budgie-core budgie-control-center xrdp -y
+   "Oh no!  Something has gone wrong." - same as before.
+10. xfce4:
+    apt-get install xfce4 desktop-base xfce4-whiskermenu-plugin  xrdp
+    * works fine.  I got kicked out of rdp randomly once but we can only test reliability by using it...

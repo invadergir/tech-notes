@@ -1,0 +1,264 @@
+# Links
+
+https://learn.microsoft.com/en-us/windows/wsl/basic-commands
+
+To change memory limits:
+edit windowshomedir/.wslconfig:
+```
+[wsl2]
+
+# limit the ram
+memory=23GB
+# Limit number of processors available.  The default is all of them (!)
+processors=12
+```
+
+To change disk size
+https://learn.microsoft.com/en-us/windows/wsl/disk-space
+
+# Misc
+
+wsl --update [--web-download]
+wsl --status
+wsl --version
+
+
+
+# Install WSL:
+
+(Installs WSL itself and default Ubuntu)
+wsl --install --web-download
+
+
+# Install a specific distro:
+
+To see all available distros:
+wsl --list --online
+
+wsl --install --web-download --distribution NAME
+
+
+# Run a specific distro [as a specific user]
+
+wsl -d DISTRO_NAME  [-u USER]
+
+
+# Get the IP Address
+
+the vm address (I don't think this is right):
+wsl hostname -i
+
+the windows ip address (seen from linux vm):
+cat /etc/resolv.conf
+
+# Stop a distro:
+
+wsl --terminate <Distribution Name>
+
+
+# Stop all distros:
+
+wsl --shutdown
+
+
+# To uninstall a distro (delete a distro):
+
+wsl --unregister <DistributionName>
+
+
+# Change the default user for a distribution
+
+(Only works for non-imported distros)
+<DistributionName> config --default-user <Username>
+
+Others must use
+/etc/wsl.conf
+See
+https://learn.microsoft.com/en-us/windows/wsl/wsl-config#user-settings
+Must edit /etc/wsl.conf then shut down the vm, wait 8 seconds.
+Add:
+```
+[user]
+default = $USERNAME
+```
+
+# WSL CAN run a desktop
+
+See [here](./desktop-linux-on-wsl-instructions.md)
+
+# Backup & Restore VMs / Export & Import VMs
+
+```
+cd C:\Users\SomeDestinationDir
+wsl --export Ubuntu ubuntu.tar
+wsl --import Ubuntu2 .\Ubuntu2 ubuntu.tar
+```
+
+
+# Use multiple different instances of same VM
+
+```
+cd C:\Users\MyHomeDirOrSomewhere
+wsl --export Ubuntu ubuntu.tar
+wsl --import UbuntuRuby .\UbuntuRuby ubuntu.tar
+wsl --import UbuntuPython .\UbuntuPython ubuntu.tar
+wsl --import UbuntuDotNet .\UbuntuDotNet ubuntu.tar
+wsl -d UbuntuRuby  # start the distribution by name
+```
+
+# Opensuse-specific
+
+Opensuse is commandline only (no desktop).  I couldn't figure out how to open the firewall through the command line
+in order to use xrdp.  There's probably a way.
+
+See
+https://en.opensuse.org/openSUSE%3AWSL
+
+```
+zypper in -t pattern wsl_gui
+zypper in -t pattern wsl_base
+zypper in -t pattern wsl_systemd
+# TODO probably more (see link)
+```
+
+# Networking modes
+
+in /Users/YourUser/.wslconfig  # global
+OR /etc/wsl.conf  # per-machine
+
+[experimental]
+# This should "improve compatibility with VPNs, and other complex networking set ups":
+#dnsTunneling=true
+# (it does not.)
+
+networkingMode=mirrored    # I think this is like bridged in VBox; default is nat
+
+# Disks
+
+## mounting disks
+
+https://html.duckduckgo.com/html?q=wsl%20how%20to%20attach%20a%20disk%20to%20a%20distribution
+https://joeferguson.me/adding-another-disk-to-wsl2/
+
+Example of mounting a VHDX file:
+
+```
+wsl --mount .\xdrive.vhdx --vhd --bare --name xdrivevhd
+
+# OR on mingw64:
+cd /c/wsl-disks
+wsl --mount pdrive.vhdx --vhd --bare --name pdrivevhd
+```
+
+To unmount:
+```
+wsl --unmount [name]
+```
+
+## How to cleanup a disk
+
+Data disks can expand in size very quickly, especially disks that you are compiling code on frequently.
+With dynamic VHDX disks, disk space is not reclaimed when a file is deleted.
+
+You have to use "OptimizeVHD":
+https://learn.microsoft.com/en-us/powershell/module/hyper-v/optimize-vhd?view=windowsserver2022-ps
+
+Which is part of the hyper-v toolset.  Install via Control Panel:
+* Turn Windows features on or off / click Hyper-V->Hyper-V Management Tools->Hyper-V Module for Windows Powershell
+* Also install Hyper-V Platform->Hyper-V Services or you will get errors using the tools.
+
+All hyper-V tools documentation:
+https://learn.microsoft.com/en-us/powershell/module/hyper-v/?view=windowsserver2022-ps
+
+Example command:
+
+```
+# first use zerofree on the disk:
+sudo umount /mnt/$MOUNT_POINT && sudo zerofree -v $DEVICE
+# then in an admin powershell window:
+wsl --shutdown
+Optimize-VHD -Path c:\path\to\disk.vhdx -Mode Prezeroed
+```
+
+NOTE
+how to compact a disk without hyper-V tools (using diskpart / compact):
+https://www.nickplunkett.com/posts/shrink-wsl-disk-size/
+
+# Bugs to watch
+
+* All WSL commands hang (including wsl --shutdown) but WSL is constantly using 30-40% CPU:
+https://github.com/microsoft/WSL/issues/8529
+    * In my experience, it usually is first noticed when doing `wsl --shutdown`, which might be the trigger.  I've started using specific `wsl --terminate DISTRO` commands instead and it's been more stable.
+
+# WSL Caveats
+
+* Remember the 8 second rule!  After terminating a WSL distro, wait 8 seconds before restarting or doing anything with it.
+* When running a desktop in RDP, be sure to wait a bit (8 seconds or so) after starting the distro before connecting via RDP.  If not, you might run into odd graphical issues (like Firefox not finding the right display or profile, maybe popping up on the windows desktop instead).
+    * I think this is because I started RDP too quickly.  I got the firefox profile error once, then restarted (because wsl --shutdown hung), then made sure to wait next time, and bam it worked.
+        * The key might be that weird wsl --shutdown hang, maybe when it gets in that state and you try to run a distro it will exhibit that issue.
+* Because of the above issue, it would be wise to avoid running any linux apps in windows if you use an RDP desktop.  If you keep all the apps inside RDP, I think Windows shouldn't get confused about which displays to use.
+* Debian (12) seems more stable than Ubuntu (22.04).  Just an observation.  The xfce4 install is more complete as well.
+* When running a desktop in RDP, be careful what you install.  Sometimes apps don't work or may pull in dependencies that are too much for your desktop to handle (and it might not boot to the GUI desktop afterwards).  Make backups before installing new apps, and/or have a test system to try before you commit to it.
+    * Apps known to be problematic:  dolphin, maybe okular, certain gnome 3 things.
+* Backup, backup, backup, just in case.  Once an app gets confused about what display or profile to use (firefox I'm looking at you), the only fix (AFAIK) is to restore from a backup.
+    * I back up the home dir and /etc every day, and full distro backups once a week to be safe.
+    * Having a separate disk mounted for work files helps keep the distro size down so backups are manageable.
+* In RDP, at least for an XFCE 4 desktop, disable compositing to get better graphical performance.  The difference is VERY noticeable and feels almost native speed.
+    * (Settings / Window Manager Tweaks / Compositor)
+* If mounting a VHDX disk separate from the OS disk (ie. with `wsl --mount persistentdisk.vhdx --vhd --bare`), be aware of a few things:
+    * The disk is shared with ALL distros.  (as of WSL v2.0.14.0)  Only mount the disk (or partition) in ONE distro at a time!
+    * I don't think you can mount it after starting a distro, so remember to mount it first.
+
+
+# WSL Pro/Con - General stuff
+
+For general, command-line only usage (ie. `wsl -d DISTRO` inside powershell)...
+
+## Pros
+
+* Command-line-only stuff is super fast, I didn't time anything but it seems very close to bare metal speed.
+* Operating on internal files (a VHDX mounted in the distro) is very fast.
+* For external files (which are auto-mounted at /mnt/c), it is faster than Virtualbox, however it is still too slow to use big git repos there though.
+* You can mount a separate persistent disk so that distro backups are much smaller.
+
+## Cons
+
+* WSL itself will sometimes get into a state where any `wsl` command will hang forever.  (See Bugs To Watch)
+* The powershell terminal isn't great, and you probably will start missing konsole or gnome-terminal or whatever.
+    * The scrollback can't be controlled via shift-page-up/down shortcuts.
+
+# WSL Pro/Con - Linux apps running on the Windows desktop:
+
+## Pros
+
+* Some linux apps will run on the Windows desktop.  But... (see Cons)
+
+## Cons
+
+* The X Server integrated between WSL and Windows is not entirely stable, and will crash from time to time, forcing you to restart WSL and all of your open graphical apps.
+* Popup dialog boxes sometimes disappear and reappear as you move the mouse over them.
+    * workaround is to move the dialog so it's not overlapping its parent window.
+* Windows titlebars don't really function right.
+    * Window highlights are not active (so when alt-tabbing, it's tougher to tell which window you are selecting)
+    * The upper-left window menu is there but doesn't respond to clicking or the alt-space shortcut to show the menu.
+* Resizing windows is sometimes tricky, you have to grab the window at just the right place and sometimes it just won't resize.  Alt-space doesn't work either as noted above.
+* Some GUI programs don't work right on the windows desktop:  kate and meld are my biggest ones, there are probably others.  File browsers other than Thunar don't work (nautilus, dolphin).
+
+# WSL Pro/Con - Linux desktop running locally through RDP
+
+This is by far the best solution, IMO.
+
+## Pros
+
+* You get a mostly fully functional Linux desktop.
+* Windows shortcut keys don't get in the way (when full screen).
+* When not full screen, alt-TAB switches between the RDP window and other windows apps, so it's easy to switch back and forth if that's what you need to do.
+* Screen share shares the desktop just fine.  (Only Google Meet was tested.)
+
+## Cons
+
+* The only desktops I have been able to get working are XFCE(v4) and LXQT.  KDE (Plasma), Gnome3, Budgie, Cinammon all fail to load.
+* There are display issues sometimes where an app might refuse to work or try to popup on the windows desktop instead.  See the Caveats section for issues and workarounds that I've found.
+* Audio does not work out of the box.  There may be workarounds at this point but I didn't test it.  I do any audio or videoconferencing in the Windows host.
+* It takes some discipline to keep it working properly.  (For example, persistent disk mounting - again, see Caveats.)
+

@@ -7,7 +7,7 @@ These directions are distilled and edited from hints in [this post](https://asku
 
 I suspect this probably works on Ubuntu and derivatives as well, but I haven't tested it fully.
 
-Steps:
+## Steps:
 
 `1.` [Install WSL](https://learn.microsoft.com/en-us/windows/wsl/install); or just `wsl --install --web-download`.  This will install the default Ubuntu VM but these instructions are guaranteed to work with Debian.  See that link for how to download and install other WSL 'distributions' (VM images).
 
@@ -58,11 +58,11 @@ sudo service xrdp start
 
 `2.` For performance, you will probably wish to configure your RDP connection to use less colors.  Adjust as needed to balance looks and speed.
 
-`3.` Inside the VM, you can disable display compositing (in XFCE, go to Settings / Window Manager Tweaks / Compositor to disable it completely).  You'll lose desktop effects and a smoother window dragging experience but it will be noticeably faster.
+`3.` Inside the VM, you can disable display compositing (in XFCE, go to Settings / Window Manager Tweaks / Compositor to disable it completely).  You'll lose desktop effects and a smoother window dragging experience, but it will be noticeably faster.
 
 ## Bonus: Docker Containers
 
-The above process works inside docker containers as well, not just WSL.
+The above process works inside containers as well, not just WSL.
 
 
 

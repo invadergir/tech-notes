@@ -18,65 +18,80 @@ https://learn.microsoft.com/en-us/windows/wsl/disk-space
 
 # Misc
 
+```
 wsl --update [--web-download]
 wsl --status
 wsl --version
-
-
+```
 
 # Install WSL:
 
 (Installs WSL itself and default Ubuntu)
+```
 wsl --install --web-download
+```
 
 
 # Install a specific distro:
 
 To see all available distros:
+```
 wsl --list --online
 
 wsl --install --web-download --distribution NAME
+```
 
 
 # Run a specific distro [as a specific user]
 
+```
 wsl -d DISTRO_NAME  [-u USER]
+```
 
 
 # Get the IP Address
 
-the vm address (I don't think this is right):
-wsl hostname -i
-
-the windows ip address (seen from linux vm):
+```
+# the Windows IP address (seen from linux vm):
 cat /etc/resolv.conf
+
+# the VM address (double check this one):
+wsl hostname -i
+```
 
 # Stop a distro:
 
+```
 wsl --terminate <Distribution Name>
+```
 
 
 # Stop all distros:
 
+```
 wsl --shutdown
-
+```
 
 # To uninstall a distro (delete a distro):
 
+```
 wsl --unregister <DistributionName>
+```
 
 
 # Change the default user for a distribution
 
-(Only works for non-imported distros)
+```
+# (Only works for non-imported distros)
 <DistributionName> config --default-user <Username>
 
-Others must use
+# Others must use
 /etc/wsl.conf
+```
+
 See
 https://learn.microsoft.com/en-us/windows/wsl/wsl-config#user-settings
-Must edit /etc/wsl.conf then shut down the vm, wait 8 seconds.
-Add:
+Must edit /etc/wsl.conf per below, then shut down the vm, wait 8 seconds.
 ```
 [user]
 default = $USERNAME
@@ -108,8 +123,8 @@ wsl -d UbuntuRuby  # start the distribution by name
 
 # Opensuse-specific
 
-Opensuse is commandline only (no desktop).  I couldn't figure out how to open the firewall through the command line
-in order to use xrdp.  There's probably a way.
+Opensuse might be commandline only (no desktop).  I couldn't figure out how to open the firewall through the command line
+in order to use xrdp.  There's probably a way though.
 
 See
 https://en.opensuse.org/openSUSE%3AWSL
@@ -126,12 +141,14 @@ zypper in -t pattern wsl_systemd
 in /Users/YourUser/.wslconfig  # global
 OR /etc/wsl.conf  # per-machine
 
+```
 [experimental]
 # This should "improve compatibility with VPNs, and other complex networking set ups":
 #dnsTunneling=true
 # (it does not.)
 
-networkingMode=mirrored    # I think this is like bridged in VBox; default is nat
+networkingMode=mirrored    # I think this is like bridged networking in VirtualBox; default is NAT
+```
 
 # Disks
 
@@ -192,10 +209,10 @@ https://github.com/microsoft/WSL/issues/8529
 
 # WSL Caveats
 
-* Remember the 8 second rule!  After terminating a WSL distro, wait 8 seconds before restarting or doing anything with it.
+* **Remember the 8 second rule!**  After terminating a WSL distro, wait 8 seconds before restarting or doing anything with it.  (This seems to be a good general rule to follow in Windows if you're not sure how long to wait after doing something that looks like it succeeded but may have add-on effects.)
 * When running a desktop in RDP, be sure to wait a bit (8 seconds or so) after starting the distro before connecting via RDP.  If not, you might run into odd graphical issues (like Firefox not finding the right display or profile, maybe popping up on the windows desktop instead).
     * I think this is because I started RDP too quickly.  I got the firefox profile error once, then restarted (because wsl --shutdown hung), then made sure to wait next time, and bam it worked.
-        * The key might be that weird wsl --shutdown hang, maybe when it gets in that state and you try to run a distro it will exhibit that issue.
+        * The key might be that weird `wsl --shutdown` hang, maybe when it gets in that state and you try to run a distro it will exhibit that issue.
 * Because of the above issue, it would be wise to avoid running any linux apps in windows if you use an RDP desktop.  If you keep all the apps inside RDP, I think Windows shouldn't get confused about which displays to use.
 * Debian (12) seems more stable than Ubuntu (22.04).  Just an observation.  The xfce4 install is more complete as well.
 * When running a desktop in RDP, be careful what you install.  Sometimes apps don't work or may pull in dependencies that are too much for your desktop to handle (and it might not boot to the GUI desktop afterwards).  Make backups before installing new apps, and/or have a test system to try before you commit to it.
